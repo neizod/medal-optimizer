@@ -6,12 +6,14 @@ from __future__ import annotations
 import argparse
 import re
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 from typing import Iterable
 
 
 PAGE_HEADER = re.compile(r"page\s+(\d+)(?:\s+unlock\s+(\d+))?\s*$")
 PREF_HEADER = re.compile(r"page\s+(\d+)(?:\s+.*)?$")
+WARBOND_HEADER = re.compile(r"(.+?)\s+\((\d{4}-\d{2}-\d{2})\)\s*$")
 
 
 class InputError(ValueError):
@@ -32,9 +34,22 @@ class Page:
 
 
 @dataclass(frozen=True)
+class Warbond:
+    title: str
+    release_date: date
+    pages: tuple[Page, ...]
+
+
+@dataclass(frozen=True)
 class Purchase:
     item: Item
     requested: bool
+
+
+@dataclass(frozen=True)
+class WarbondRef:
+    alias: str
+    path: Path
 
 
 def meaningful_lines(path: Path) -> Iterable[tuple[int, str]]:
@@ -49,7 +64,24 @@ def meaningful_lines(path: Path) -> Iterable[tuple[int, str]]:
             yield line_number, line
 
 
-def parse_warbond(path: Path) -> tuple[Page, ...]:
+def parse_warbond(path: Path) -> Warbond:
+    lines = iter(meaningful_lines(path))
+    try:
+        header_line_number, header_line = next(lines)
+    except StopIteration as exc:
+        raise InputError(f"{path}: is empty") from exc
+
+    header = WARBOND_HEADER.fullmatch(header_line)
+    if not header:
+        raise InputError(
+            f"{path}:{header_line_number}: expected WARBOND NAME (YYYY-MM-DD)"
+        )
+    title = header.group(1)
+    try:
+        release_date = date.fromisoformat(header.group(2))
+    except ValueError as exc:
+        raise InputError(f"{path}:{header_line_number}: invalid release date") from exc
+
     pages: list[Page] = []
     current_number: int | None = None
     current_unlock = 0
@@ -62,7 +94,7 @@ def parse_warbond(path: Path) -> tuple[Page, ...]:
         current_number = None
         current_items = []
 
-    for line_number, line in meaningful_lines(path):
+    for line_number, line in lines:
         header = PAGE_HEADER.fullmatch(line)
         if header:
             finish_page()
@@ -95,7 +127,7 @@ def parse_warbond(path: Path) -> tuple[Page, ...]:
         raise InputError(f"{path}: page 1 must have unlock value 0")
     if any(left.unlock > right.unlock for left, right in zip(pages, pages[1:])):
         raise InputError(f"{path}: unlock values must not decrease")
-    return tuple(pages)
+    return Warbond(title, release_date, tuple(pages))
 
 
 def parse_preferences(path: Path, pages: tuple[Page, ...]) -> dict[int, tuple[Item, ...]]:
@@ -186,27 +218,55 @@ def optimize(
     return prior_plan + (final_purchases,)
 
 
-def find_warbond(root: Path, alias: str) -> Path:
-    if not alias or Path(alias).name != alias:
-        raise InputError(f"invalid warbond abbreviation: {alias!r}")
-    matches = sorted((root / "warbonds").glob(f"*_{alias}.txt"))
+def available_warbonds(root: Path) -> tuple[WarbondRef, ...]:
+    refs: list[WarbondRef] = []
+    for path in sorted((root / "warbonds").glob("*.txt")):
+        _, separator, alias = path.stem.partition("_")
+        if separator and alias:
+            refs.append(WarbondRef(alias, path))
+    return tuple(refs)
+
+
+def format_warbonds(refs: Iterable[WarbondRef]) -> str:
+    lines = ["Available warbonds:"]
+    entries = list(refs)
+    if not entries:
+        lines.append("  (none)")
+    else:
+        lines.extend(f"  {ref.alias:<16} {ref.path.name}" for ref in entries)
+    return "\n".join(lines)
+
+
+def find_warbond(refs: tuple[WarbondRef, ...], query: str) -> WarbondRef:
+    if not query or Path(query).name != query:
+        raise InputError(f"invalid warbond abbreviation: {query!r}")
+
+    folded_query = query.casefold()
+    exact = [ref for ref in refs if ref.alias.casefold() == folded_query]
+    matches = exact or [ref for ref in refs if ref.alias.casefold().startswith(folded_query)]
     if not matches:
-        raise InputError(f"unknown warbond: {alias!r}")
+        raise InputError(f"unknown warbond: {query!r}\n{format_warbonds(refs)}")
     if len(matches) > 1:
-        raise InputError(f"warbond abbreviation {alias!r} is ambiguous")
+        raise InputError(
+            f"warbond abbreviation {query!r} is ambiguous\n{format_warbonds(matches)}"
+        )
     return matches[0]
 
 
-def print_plan(alias: str, plan: tuple[tuple[Purchase, ...], ...]) -> None:
+def print_plan(warbond: Warbond, plan: tuple[tuple[Purchase, ...], ...]) -> None:
     total = 0
-    print(f"Warbond: {alias}")
+    heading = f"{warbond.title} ({warbond.release_date.isoformat()})"
+    print(heading)
+    print("=" * len(heading))
+    print()
     for page_number, purchases in enumerate(plan, 1):
         page_cost = sum(purchase.item.cost for purchase in purchases)
         total += page_cost
         print(f"page {page_number}: {page_cost} medals (cumulative: {total})")
         for purchase in purchases:
-            reason = "requested" if purchase.requested else "unlock"
-            print(f"  {purchase.item.name:<12} {purchase.item.cost:>3}  [{reason}]")
+            marker = "*" if purchase.requested else ""
+            print(f"  {purchase.item.name:<12} {purchase.item.cost:>3}{marker}")
+        print()
     print(f"total: {total} medals")
 
 
@@ -214,7 +274,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Find the cheapest purchases satisfying warbond preferences."
     )
-    parser.add_argument("warbond", help="warbond abbreviation, such as 'control'")
+    parser.add_argument(
+        "warbond",
+        nargs="?",
+        help="warbond abbreviation or unique prefix, such as 'control' or 'con'",
+    )
     parser.add_argument(
         "preference",
         nargs="?",
@@ -236,14 +300,20 @@ def main() -> None:
         parser.error("--no-pref cannot be combined with a preference file")
 
     root = Path(__file__).resolve().parent
+    refs = available_warbonds(root)
+    if args.warbond is None:
+        print(format_warbonds(refs))
+        return
+
     try:
-        warbond_path = find_warbond(root, args.warbond)
-        pages = parse_warbond(warbond_path)
+        warbond = find_warbond(refs, args.warbond)
+        warbond_data = parse_warbond(warbond.path)
+        pages = warbond_data.pages
         if args.no_pref:
             requested: dict[int, tuple[Item, ...]] = {}
             target_page = len(pages)
         else:
-            preference_path = args.preference or root / "prefs" / warbond_path.name
+            preference_path = args.preference or root / "prefs" / warbond.path.name
             requested = parse_preferences(preference_path, pages)
             if not any(requested.values()):
                 raise InputError(f"{preference_path}: contains no requested items")
@@ -252,7 +322,7 @@ def main() -> None:
     except InputError as exc:
         parser.error(str(exc))
 
-    print_plan(args.warbond, plan)
+    print_plan(warbond_data, plan)
 
 
 if __name__ == "__main__":
