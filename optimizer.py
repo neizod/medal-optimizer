@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import argparse
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 from typing import Iterable
@@ -44,6 +44,18 @@ class Warbond:
 class Purchase:
     item: Item
     requested: bool
+
+
+@dataclass
+class PlanNode:
+    count: int = 0
+    edges: list[PlanEdge] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class PlanEdge:
+    previous: PlanNode
+    purchases: tuple[Purchase, ...]
 
 
 @dataclass(frozen=True)
@@ -165,46 +177,63 @@ def parse_preferences(path: Path, pages: tuple[Page, ...]) -> dict[int, tuple[It
     return requested
 
 
-def subset_choices(page: Page, required: tuple[Item, ...]) -> dict[int, tuple[Purchase, ...]]:
+def subset_choices(
+    page: Page, required: tuple[Item, ...]
+) -> list[tuple[int, tuple[Purchase, ...]]]:
     required_set = set(required)
     required_purchases = tuple(Purchase(item, True) for item in page.items if item in required_set)
     required_cost = sum(purchase.item.cost for purchase in required_purchases)
-    choices: dict[int, tuple[Purchase, ...]] = {required_cost: required_purchases}
+    choices = [(required_cost, required_purchases)]
 
     for item in page.items:
         if item in required_set:
             continue
         purchase = Purchase(item, False)
-        additions = {
-            cost + item.cost: purchases + (purchase,)
-            for cost, purchases in choices.items()
-        }
-        for cost, purchases in additions.items():
-            choices.setdefault(cost, purchases)
+        choices += [
+            (cost + item.cost, purchases + (purchase,))
+            for cost, purchases in choices
+        ]
     return choices
 
 
+def unrank_plan(node: PlanNode, solution_number: int) -> tuple[tuple[Purchase, ...], ...]:
+    if not node.edges:
+        return ()
+    for edge in node.edges:
+        if solution_number > edge.previous.count:
+            solution_number -= edge.previous.count
+            continue
+        return unrank_plan(edge.previous, solution_number) + (edge.purchases,)
+    raise AssertionError("solution number exceeds the DP node count")
+
+
 def optimize(
-    pages: tuple[Page, ...], requested: dict[int, tuple[Item, ...]], target_page: int
-) -> tuple[tuple[Purchase, ...], ...]:
-    # A state retains one representative plan for every reachable cumulative
-    # spend. Keeping overshoots is essential because they carry into later pages.
-    states: dict[int, tuple[tuple[Purchase, ...], ...]] = {0: ()}
+    pages: tuple[Page, ...],
+    requested: dict[int, tuple[Item, ...]],
+    target_page: int,
+    solution_number: int,
+) -> tuple[tuple[tuple[Purchase, ...], ...], int]:
+    # Each cumulative-spend state is a compact DAG node. Its count supports
+    # selecting any tied solution without materializing every complete plan.
+    states = {0: PlanNode(count=1)}
 
     for page in pages[: target_page - 1]:
-        states = {cost: plan for cost, plan in states.items() if cost >= page.unlock}
+        states = {cost: state for cost, state in states.items() if cost >= page.unlock}
         if not states:
             raise InputError(f"page {page.number} cannot be unlocked")
 
         choices = subset_choices(page, requested.get(page.number, ()))
-        next_states: dict[int, tuple[tuple[Purchase, ...], ...]] = {}
-        for total, plan in states.items():
-            for page_cost, purchases in choices.items():
-                next_states.setdefault(total + page_cost, plan + (purchases,))
+        next_states: dict[int, PlanNode] = {}
+        for total, previous in states.items():
+            for page_cost, purchases in choices:
+                next_cost = total + page_cost
+                node = next_states.setdefault(next_cost, PlanNode())
+                node.count += previous.count
+                node.edges.append(PlanEdge(previous, purchases))
         states = next_states
 
     target = pages[target_page - 1]
-    states = {cost: plan for cost, plan in states.items() if cost >= target.unlock}
+    states = {cost: state for cost, state in states.items() if cost >= target.unlock}
     if not states:
         raise InputError(
             f"cannot reach the {target.unlock}-medal threshold for page {target_page}"
@@ -213,9 +242,13 @@ def optimize(
     final_purchases = tuple(
         Purchase(item, True) for item in target.items if item in set(requested.get(target_page, ()))
     )
-    prior_cost, prior_plan = min(states.items(), key=lambda state: state[0])
-    del prior_cost
-    return prior_plan + (final_purchases,)
+    minimum_cost = min(states)
+    optimum = states[minimum_cost]
+    if solution_number > optimum.count:
+        raise InputError(
+            f"solution {solution_number} does not exist; choose 1 through {optimum.count}"
+        )
+    return unrank_plan(optimum, solution_number) + (final_purchases,), optimum.count
 
 
 def available_warbonds(root: Path) -> tuple[WarbondRef, ...]:
@@ -253,11 +286,20 @@ def find_warbond(refs: tuple[WarbondRef, ...], query: str) -> WarbondRef:
     return matches[0]
 
 
-def print_plan(warbond: Warbond, plan: tuple[tuple[Purchase, ...], ...]) -> None:
+def print_plan(
+    warbond: Warbond,
+    plan: tuple[tuple[Purchase, ...], ...],
+    solution_number: int,
+    solution_count: int,
+    objective: str,
+) -> None:
     total = 0
     heading = f"{warbond.title} ({warbond.release_date.isoformat()})"
     print(heading)
     print("=" * len(heading))
+    print()
+    print(f"Optimized medal spending for {objective}.")
+    print(f"Showing solution {solution_number} of {solution_count}")
     print()
     for page_number, purchases in enumerate(plan, 1):
         page_cost = sum(purchase.item.cost for purchase in purchases)
@@ -270,6 +312,16 @@ def print_plan(warbond: Warbond, plan: tuple[tuple[Purchase, ...], ...]) -> None
     print(f"total: {total} medals")
 
 
+def positive_integer(value: str) -> int:
+    try:
+        number = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("must be a positive integer") from exc
+    if number < 1:
+        raise argparse.ArgumentTypeError("must be a positive integer")
+    return number
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Find the cheapest purchases satisfying warbond preferences."
@@ -280,12 +332,21 @@ def build_parser() -> argparse.ArgumentParser:
         help="warbond abbreviation or unique prefix, such as 'control' or 'con'",
     )
     parser.add_argument(
-        "preference",
+        "solution",
         nargs="?",
+        type=positive_integer,
+        default=1,
+        help="1-based optimal solution number to display (default: 1)",
+    )
+    parser.add_argument(
+        "-f",
+        "--pref",
+        dest="preference",
         type=Path,
         help="alternative preference file (defaults to the matching file in prefs/)",
     )
     parser.add_argument(
+        "-z",
         "--no-pref",
         action="store_true",
         help="ignore preferences and find the cheapest way to unlock the last page",
@@ -295,13 +356,15 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     parser = build_parser()
-    args = parser.parse_args()
+    args = parser.parse_intermixed_args()
     if args.no_pref and args.preference is not None:
         parser.error("--no-pref cannot be combined with a preference file")
 
     root = Path(__file__).resolve().parent
     refs = available_warbonds(root)
     if args.warbond is None:
+        if args.no_pref or args.preference is not None:
+            parser.error("a warbond is required when using options")
         print(format_warbonds(refs))
         return
 
@@ -312,17 +375,24 @@ def main() -> None:
         if args.no_pref:
             requested: dict[int, tuple[Item, ...]] = {}
             target_page = len(pages)
+            objective = "unlocking all pages"
         else:
             preference_path = args.preference or root / "prefs" / warbond.path.name
             requested = parse_preferences(preference_path, pages)
             if not any(requested.values()):
                 raise InputError(f"{preference_path}: contains no requested items")
             target_page = max(page for page, items in requested.items() if items)
-        plan = optimize(pages, requested, target_page)
+            if args.preference is None:
+                objective = "the standard preferences"
+            else:
+                objective = f'personal preferences from "{args.preference}"'
+        plan, solution_count = optimize(
+            pages, requested, target_page, args.solution
+        )
     except InputError as exc:
         parser.error(str(exc))
 
-    print_plan(warbond_data, plan)
+    print_plan(warbond_data, plan, args.solution, solution_count, objective)
 
 
 if __name__ == "__main__":

@@ -34,7 +34,8 @@ candidates.
 Use an alternative preference file:
 
 ```console
-./optimizer.py control path/to/my_preferences.txt
+./optimizer.py control -f path/to/my_preferences.txt
+./optimizer.py control --pref path/to/my_preferences.txt
 ```
 
 Ignore preferences and find the cheapest way to unlock the final page:
@@ -43,10 +44,21 @@ Ignore preferences and find the cheapest way to unlock the final page:
 ./optimizer.py --no-pref control
 ```
 
+The short form is `./optimizer.py -z control`.
+
 `--no-pref` and an alternative preference file are mutually exclusive. In the
 output, an asterisk immediately after an item's cost marks a requested purchase;
 unmarked items were selected by the optimizer for unlocking. Per-page and
-cumulative medal costs are both shown.
+cumulative medal costs are both shown. When several plans tie for the minimum
+cost, the script reports the total number of optimal solutions. Pass a 1-based
+solution number as the optional second positional argument to display a
+different tied plan:
+
+```console
+./optimizer.py control 2
+```
+
+Requesting a number outside the reported range produces an error.
 
 ## Input format
 
