@@ -1,9 +1,3 @@
-page 1
-SC
-
-page 2 unlock 150
-SC
-
-page 3
-SC
-back
+page 1: SC
+page 2: SC
+page 3: SC, back

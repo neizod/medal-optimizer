@@ -68,12 +68,12 @@ The sample file is divided into page blocks:
 Control Group (2025-07-17)
 
 page 1 unlock 0
-body     45
-card      2
+  body     45
+  card      2
 ...
 
 page 2 unlock 150
-SC       12
+  SC       12
 ...
 ```
 
@@ -81,9 +81,10 @@ The first line contains the formal warbond name and its ISO release date. It is
 followed by a blank line before the page specification.
 
 The header has the form `page <number> unlock <threshold>`. Each following
-non-empty line contains an item name and its medal cost. Item names should be
-treated as labels; repeated labels such as `SC` are separate rewards when they
-occur on different pages. Blank lines separate pages.
+non-empty line contains an item name and its medal cost, indented by two spaces
+for readability. Item names should be treated as labels; repeated labels such
+as `SC` are separate rewards when they occur on different pages. Blank lines
+separate pages.
 
 Page 1 is always available. To unlock page `k`, purchases made on pages
 `1..k-1` must have a combined cost greater than or equal to page `k`'s unlock
@@ -116,14 +117,21 @@ A player may want a cosmetic item, weapon, or other reward even when buying it
 makes the final plan cost more than the unconstrained mathematical optimum. The
 optimizer should respect those choices rather than prescribe a universal meta.
 
-A preference file lists rewards that must be included in the plan, grouped by
-page. For example, the current preference file requests `SC` on every page and
-`back` on page 3. These purchases count normally toward page thresholds and
-their overspending carries forward. The objective is to find the least
-expensive valid plan containing all requested rewards, choosing only the extra
-purchases needed to unlock their pages. The result is thus optimal for the
-player's chosen playstyle, even when it costs more than a plan with no
-preferences.
+A preference file lists required rewards compactly, with one page per line and
+comma-separated item names:
+
+```text
+page 1: SC
+page 2: SC
+page 3: SC, back
+```
+
+The current preference file therefore requests `SC` on every page and `back`
+on page 3. These purchases count normally toward page thresholds and their
+overspending carries forward. The objective is to find the least expensive
+valid plan containing all requested rewards, choosing only the extra purchases
+needed to unlock their pages. The result is thus optimal for the player's
+chosen playstyle, even when it costs more than a plan with no preferences.
 
 A practical first implementation could:
 

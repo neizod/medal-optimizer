@@ -1,25 +1,25 @@
 Control Group (2025-07-17)
 
 page 1 unlock 0
-body     45
-card      2
-gun      35
-head     30
-cape      8
-SC        7
-adv.gun  75
+  body     45
+  card      2
+  gun      35
+  head     30
+  cape      8
+  SC        7
+  adv.gun  75
 
 page 2 unlock 150
-SC       12
-head     45
-body     55
-cape     25
-sentry   85
-card      7
+  SC       12
+  head     45
+  body     55
+  cape     25
+  sentry   85
+  card      7
 
 page 3 unlock 320
-emote    55
-title    20
-throw    65
-SC       32
-back    110
+  emote    55
+  title    20
+  throw    65
+  SC       32
+  back    110

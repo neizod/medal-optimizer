@@ -12,7 +12,7 @@ from typing import Iterable
 
 
 PAGE_HEADER = re.compile(r"page\s+(\d+)(?:\s+unlock\s+(\d+))?\s*$")
-PREF_HEADER = re.compile(r"page\s+(\d+)(?:\s+.*)?$")
+PREF_LINE = re.compile(r"page\s+(\d+)\s*:\s*(.*)$")
 WARBOND_HEADER = re.compile(r"(.+?)\s+\((\d{4}-\d{2}-\d{2})\)\s*$")
 
 
@@ -144,19 +144,24 @@ def parse_warbond(path: Path) -> Warbond:
 
 def parse_preferences(path: Path, pages: tuple[Page, ...]) -> dict[int, tuple[Item, ...]]:
     names_by_page: dict[int, list[str]] = {}
-    current_page: int | None = None
 
     for line_number, line in meaningful_lines(path):
-        header = PREF_HEADER.fullmatch(line)
-        if header:
-            current_page = int(header.group(1))
-            if not 1 <= current_page <= len(pages):
-                raise InputError(f"{path}:{line_number}: page {current_page} does not exist")
-            names_by_page.setdefault(current_page, [])
-            continue
-        if current_page is None:
-            raise InputError(f"{path}:{line_number}: preference appears before a page header")
-        names_by_page[current_page].append(line)
+        match = PREF_LINE.fullmatch(line)
+        if not match:
+            raise InputError(
+                f"{path}:{line_number}: expected page NUMBER: ITEM, ITEM, ..."
+            )
+        page_number = int(match.group(1))
+        if not 1 <= page_number <= len(pages):
+            raise InputError(f"{path}:{line_number}: page {page_number} does not exist")
+        if page_number in names_by_page:
+            raise InputError(f"{path}:{line_number}: duplicate page {page_number}")
+
+        raw_names = match.group(2)
+        names = [name.strip() for name in raw_names.split(",")]
+        if not raw_names or any(not name for name in names):
+            raise InputError(f"{path}:{line_number}: page must list at least one item")
+        names_by_page[page_number] = names
 
     requested: dict[int, tuple[Item, ...]] = {}
     for page_number, names in names_by_page.items():
