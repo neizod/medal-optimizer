@@ -8,11 +8,34 @@ for spending medals on Helldivers 2 warbond rewards.
 - `warbonds/pw2507_control.txt` — sample warbond data with three pages.
 - `prefs/pw2507_control.txt` — example rewards the player wants from that
   warbond.
+- `optimizer.py` — executable Python 3 command-line optimizer.
 - `README.md` — project handoff and initial design notes.
 
-No Python implementation exists yet.
-
 Warbond and preference files with the same basename belong together.
+
+## Usage
+
+Use the default preferences associated with a warbond:
+
+```console
+./optimizer.py control
+```
+
+Use an alternative preference file:
+
+```console
+./optimizer.py control path/to/my_preferences.txt
+```
+
+Ignore preferences and find the cheapest way to unlock the final page:
+
+```console
+./optimizer.py --no-pref control
+```
+
+`--no-pref` and an alternative preference file are mutually exclusive. The
+output labels each purchase as `requested` or as an optimizer-selected `unlock`
+purchase, and shows both per-page and cumulative medal costs.
 
 ## Input format
 
@@ -92,26 +115,22 @@ make an already-considered transition valid. Tests should cover exact-threshold
 spending, duplicate item labels, unused budget, a requested reward on a locked
 page, and an unknown or ambiguous requested reward.
 
-## Decisions needed before coding
+## Possible extensions
 
-The initial objective is now defined: minimize total medal spending while
-including every requested reward. The command-line contract still needs to be
-specified. Also decide whether purchases within an unlocked page may occur in
-any order and whether future preference files need priorities such as optional
-or weighted requests; the current example represents required purchases only.
+The initial objective is to minimize total medal spending while including every
+requested reward. Future preference files might support priorities such as
+optional or weighted requests; the current format represents required purchases
+only.
 
 ## Suggested project shape
 
-Keep parsing, optimization, and presentation separate so the DP can be tested
-without invoking a CLI. A small initial layout would be:
+Parsing, optimization, and presentation are kept separate so the DP can be
+tested without invoking the CLI. The project layout is:
 
 ```text
 optimizer.py          # parser, data types, and DP solver
-test_optimizer.py     # parser and solver tests
 warbonds/             # plain-text warbond definitions
 prefs/                # requested rewards, paired by filename
 ```
 
-Use only the Python standard library unless a dependency provides a clear
-benefit. Once the objective is fixed, document the exact CLI invocation and
-expected output here.
+The implementation currently uses only the Python standard library.
