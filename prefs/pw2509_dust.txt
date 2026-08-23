@@ -1,0 +1,3 @@
+page 1: SC
+page 2: SC, adv.gun
+page 3: SC

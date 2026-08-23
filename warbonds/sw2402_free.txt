@@ -1,0 +1,101 @@
+Helldivers Mobilize (2024-02-08)
+
+page 1 unlock 0
+  card       1
+  3rd.bomb   2
+  SC         1
+  1st.gun    4
+  emote      1
+  body       3
+  head       2
+  cape       2
+
+page 2 unlock 8
+  emote      2
+  body       6
+  head       5
+  card       1
+  2nd.colt   5
+  cape       3
+  SC         2
+  1st.gun    8
+
+page 3 unlock 35
+  card       2
+  boost     15
+  SC         3
+  1st.gun   15
+  emote      8
+  body      10
+  head       7
+  cape       5
+
+page 4 unlock 75
+  emote     20
+  body      15
+  head      12
+  cape       8
+  card       2
+  boost     20
+  SC         6
+  1st.gun   20
+
+page 5 unlock 150
+  3rd.bomb  20
+  card       4
+  SC        10
+  1st.gun   30
+  body      25
+  head      20
+  emote     20
+  cape      12
+
+page 6 unlock 260
+  emote     12
+  body      35
+  head      25
+  card       6
+  boost     40
+  cape      15
+  SC        15
+  1st.gun   40
+
+page 7 unlock 420
+  boost     75
+  card       7
+  SC        15
+  1st.gun   40
+  body      50
+  head      35
+  emote     35
+  cape      15
+
+page 8 unlock 650
+  emote     50
+  body      60
+  head      40
+  card      10
+  3rd.bomb  25
+  cape      25
+  SC        20
+  1st.gun   60
+
+page 9 unlock 850
+  boost     70
+  card      15
+  SC        25
+  1st.gun   60
+  body      70
+  head      50
+  emote     30
+  cape      30
+
+page 10 unlock 1200
+  emote     50
+  body     100
+  head      75
+  boost    150
+  card      20
+  cape      40
+  SC        50
+  1st.gun   75

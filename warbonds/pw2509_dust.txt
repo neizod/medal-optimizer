@@ -1,0 +1,29 @@
+Dust Devils (2025-09-04)
+
+page 1 unlock 0
+  cape       8
+  head      30
+  SC         7
+  pod       20
+  body      45
+  card       2
+  1st.gun   35
+
+page 2 unlock 110
+  adv.gun   85
+  head      45
+  body      55
+  card       7
+  cape      25
+  ship      50
+  adv.rkt   85
+  SC        12
+
+page 3 unlock 270
+  SC        32
+  mininuke 110
+  emote     20
+  mech      50
+  car       55
+  3rd.bomb  65
+  title     20

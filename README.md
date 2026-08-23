@@ -27,6 +27,9 @@ Use the default preferences associated with a warbond:
 ./optimizer.py control
 ```
 
+If the warbond has no matching file in `prefs/`, the script automatically finds
+the cheapest way to unlock all pages, as if `-z` had been supplied.
+
 The warbond argument also accepts a unique, case-insensitive prefix, so `con`
 selects `control`. An ambiguous prefix produces an error listing its matching
 candidates.
@@ -125,6 +128,10 @@ page 1: SC
 page 2: SC
 page 3: SC, back
 ```
+
+Pages with no required items may be omitted or written explicitly, such as
+`page 2:`. A preference file with no requested items behaves like `-z` and
+unlocks all pages.
 
 The current preference file therefore requests `SC` on every page and `back`
 on page 3. These purchases count normally toward page thresholds and their

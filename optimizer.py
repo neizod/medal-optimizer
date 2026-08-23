@@ -157,10 +157,10 @@ def parse_preferences(path: Path, pages: tuple[Page, ...]) -> dict[int, tuple[It
         if page_number in names_by_page:
             raise InputError(f"{path}:{line_number}: duplicate page {page_number}")
 
-        raw_names = match.group(2)
-        names = [name.strip() for name in raw_names.split(",")]
-        if not raw_names or any(not name for name in names):
-            raise InputError(f"{path}:{line_number}: page must list at least one item")
+        raw_names = match.group(2).strip()
+        names = [] if not raw_names else [name.strip() for name in raw_names.split(",")]
+        if any(not name for name in names):
+            raise InputError(f"{path}:{line_number}: item names cannot be empty")
         names_by_page[page_number] = names
 
     requested: dict[int, tuple[Item, ...]] = {}
@@ -377,20 +377,26 @@ def main() -> None:
         warbond = find_warbond(refs, args.warbond)
         warbond_data = parse_warbond(warbond.path)
         pages = warbond_data.pages
-        if args.no_pref:
+        default_preference = root / "prefs" / warbond.path.name
+        use_no_preferences = args.no_pref or (
+            args.preference is None and not default_preference.is_file()
+        )
+        if use_no_preferences:
             requested: dict[int, tuple[Item, ...]] = {}
             target_page = len(pages)
             objective = "unlocking all pages"
         else:
-            preference_path = args.preference or root / "prefs" / warbond.path.name
+            preference_path = args.preference or default_preference
             requested = parse_preferences(preference_path, pages)
-            if not any(requested.values()):
-                raise InputError(f"{preference_path}: contains no requested items")
-            target_page = max(page for page, items in requested.items() if items)
-            if args.preference is None:
-                objective = "the standard preferences"
+            if any(requested.values()):
+                target_page = max(page for page, items in requested.items() if items)
+                if args.preference is None:
+                    objective = "the standard preferences"
+                else:
+                    objective = f'personal preferences from "{args.preference}"'
             else:
-                objective = f'personal preferences from "{args.preference}"'
+                target_page = len(pages)
+                objective = "unlocking all pages"
         plan, solution_count = optimize(
             pages, requested, target_page, args.solution
         )

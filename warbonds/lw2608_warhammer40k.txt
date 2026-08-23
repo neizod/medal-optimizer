@@ -1,0 +1,24 @@
+Castellan's Creed (2026-08-12)
+
+page 1 unlock 0
+  card       2
+  body      45
+  1st.gun   35
+  cape       8
+  head      30
+  pod       20
+
+page 2 unlock 0
+  3rd.bomb  50
+  2nd.colt  50
+  body      55
+  ship      50
+  card       7
+  cape      25
+  head      45
+
+page 3 unlock 0
+  mech      50
+  car       55
+  title     20
+  adv.gun  110
