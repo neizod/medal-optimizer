@@ -10,8 +10,10 @@
   <body>
     <main>
       <header>
-        <h1>Medal Optimizer</h1>
-        <h2>Helldivers 2 Warbond Planner</h2>
+        <div class="branding">
+          <h1>Medal Optimizer</h1>
+          <h2>Helldivers 2 Warbond Planner</h2>
+        </div>
         <div class="warbond-picker">
           <select id="warbond" aria-label="Warbond"></select>
         </div>
@@ -22,8 +24,12 @@
     </main>
 
     <div class="actions" role="toolbar" aria-label="Preference actions">
-      <button id="reset" type="button">Reset</button>
-      <button id="clear" type="button">Clear</button>
+      <button id="how-to-use" type="button">How to use</button>
+      <div class="preference-actions">
+        <button id="reset" type="button">Reset</button>
+        <button id="clear" type="button">Clear</button>
+      </div>
+      <output id="medal-total" aria-label="Total medals selected">💀 0</output>
     </div>
   </body>
 </html>

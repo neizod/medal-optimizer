@@ -27,8 +27,9 @@ using the recorded card dimensions, and stores both the selected warbond and
 reward preferences in browser `localStorage`. Each card shows its full name,
 compact key, and medal cost. Clicking a card toggles it.
 **Reset** restores the standard preference file for the selected warbond, while
-**Clear** removes every current selection. The web interface does not run the
-medal optimizer yet.
+**Clear** removes every current selection; both actions require confirmation.
+The fixed toolbar also provides brief usage help and a live `💀` total for the
+selected cards. The web interface does not run the medal optimizer yet.
 
 ## Warbond catalog
 

@@ -13,16 +13,24 @@ main {
   padding: 1rem 1rem 6rem;
 }
 
-header h1 {
-  margin-bottom: 0;
-}
-
-header h2 {
-  margin-top: 0.25rem;
-}
-
 header {
   display: contents;
+}
+
+.branding {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.branding h1,
+.branding h2 {
+  margin: 0.5rem 0;
+}
+
+.branding h2 {
+  text-align: right;
 }
 
 .warbond-picker {
@@ -85,8 +93,9 @@ select {
   position: fixed;
   bottom: 0;
   left: 50%;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
   gap: 0.75rem;
   box-sizing: border-box;
   width: min(100%, 800px);
@@ -97,5 +106,19 @@ select {
 }
 
 .actions button {
-  min-width: 8rem;
+  min-width: 6rem;
+}
+
+#how-to-use {
+  justify-self: start;
+}
+
+.preference-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+#medal-total {
+  justify-self: end;
+  font-weight: bold;
 }

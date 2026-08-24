@@ -1,11 +1,11 @@
 "use strict";
 
 const CATALOG = [
-  { alias: "free", name: "Helldivers Mobilize", file: "sw2402_free.txt" },
-  { alias: "urban", name: "Urban Legends", file: "pw2412_urban.txt" },
-  { alias: "control", name: "Control Group", file: "pw2507_control.txt" },
-  { alias: "dust", name: "Dust Devils", file: "pw2509_dust.txt" },
-  { alias: "warhammer40k", name: "Castellan's Creed", file: "lw2608_warhammer40k.txt" },
+  { alias: "free", file: "sw2402_free.txt" },
+  { alias: "urban", file: "pw2412_urban.txt" },
+  { alias: "control", file: "pw2507_control.txt" },
+  { alias: "dust", file: "pw2509_dust.txt" },
+  { alias: "warhammer40k", file: "lw2608_warhammer40k.txt" },
 ];
 
 const STORAGE_KEY = "helldiver-medal-optimizer.preferences.v1";
@@ -14,13 +14,16 @@ const WARBOND_STORAGE_KEY = "helldiver-medal-optimizer.warbond.v1";
 const select = document.querySelector("#warbond");
 const pagesElement = document.querySelector("#pages");
 const statusElement = document.querySelector("#status");
+const howToUseButton = document.querySelector("#how-to-use");
 const resetButton = document.querySelector("#reset");
 const clearButton = document.querySelector("#clear");
+const medalTotalElement = document.querySelector("#medal-total");
 
 let currentAlias = readSelectedWarbond();
 let currentWarbond = null;
 let standardPreferences = new Set();
 let selectedPreferences = new Set();
+const warbondTextCache = new Map();
 
 function meaningfulLines(text) {
   return text
@@ -123,6 +126,11 @@ function savePreferences() {
 }
 
 async function fetchText(path, optional = false) {
+  if (location.protocol === "file:") {
+    throw new Error(
+      "Serve this directory over HTTP: python3 -m http.server 8000",
+    );
+  }
   const response = await fetch(path);
   if (optional && response.status === 404) {
     return "";
@@ -133,13 +141,14 @@ async function fetchText(path, optional = false) {
   return response.text();
 }
 
-async function loadWarbond(alias) {
-  if (location.protocol === "file:") {
-    throw new Error(
-      "Serve this directory over HTTP: python3 -m http.server 8000",
-    );
+function fetchWarbondText(entry) {
+  if (!warbondTextCache.has(entry.file)) {
+    warbondTextCache.set(entry.file, fetchText(`warbonds/${entry.file}`));
   }
+  return warbondTextCache.get(entry.file);
+}
 
+async function loadWarbond(alias) {
   const entry = CATALOG.find((candidate) => candidate.alias === alias);
   if (!entry) {
     throw new Error(`Unknown warbond: ${alias}`);
@@ -150,7 +159,7 @@ async function loadWarbond(alias) {
   pagesElement.replaceChildren();
 
   const [warbondText, preferenceText] = await Promise.all([
-    fetchText(`warbonds/${entry.file}`),
+    fetchWarbondText(entry),
     fetchText(`prefs/${entry.file}`, true),
   ]);
 
@@ -178,7 +187,7 @@ function renderPages() {
     const heading = document.createElement("h2");
     heading.textContent = page.number === 1
       ? `Page ${page.number}`
-      : `Page ${page.number}, unlock: ${page.unlock}`;
+      : `Page ${page.number}, unlock: 💀 ${page.unlock}`;
     section.append(heading);
 
     const grid = document.createElement("div");
@@ -201,7 +210,7 @@ function renderPages() {
       key.className = "key";
       key.textContent = item.key;
       const cost = document.createElement("small");
-      cost.textContent = `${item.cost} medals`;
+      cost.textContent = `💀 ${item.cost}`;
       button.append(name);
       if (item.fullName !== "FIXME") {
         button.append(key);
@@ -216,6 +225,7 @@ function renderPages() {
         }
         button.setAttribute("aria-pressed", selectedPreferences.has(id));
         savePreferences();
+        updateMedalTotal();
       });
       grid.append(button);
     }
@@ -223,6 +233,20 @@ function renderPages() {
     section.append(grid);
     pagesElement.append(section);
   }
+  updateMedalTotal();
+}
+
+function updateMedalTotal() {
+  const total = currentWarbond.pages.reduce(
+    (warbondTotal, page) => warbondTotal + page.items.reduce(
+      (pageTotal, item) => pageTotal + (
+        selectedPreferences.has(itemId(page.number, item.key)) ? item.cost : 0
+      ),
+      0,
+    ),
+    0,
+  );
+  medalTotalElement.value = `💀 ${total}`;
 }
 
 function placeCards(page) {
@@ -269,11 +293,17 @@ function replaceSelection(preferences) {
   renderPages();
 }
 
-function populateCatalog() {
-  for (const entry of CATALOG) {
+async function populateCatalog() {
+  const entries = await Promise.all(CATALOG.map(async (entry) => {
+    const warbond = parseWarbond(await fetchWarbondText(entry));
+    return { ...entry, title: warbond.title, releaseDate: warbond.releaseDate };
+  }));
+  entries.sort((left, right) => right.releaseDate.localeCompare(left.releaseDate));
+
+  for (const entry of entries) {
     const option = document.createElement("option");
     option.value = entry.alias;
-    option.textContent = `${entry.name} (${entry.alias})`;
+    option.textContent = `${entry.title} (${entry.releaseDate})`;
     option.selected = entry.alias === currentAlias;
     select.append(option);
   }
@@ -282,13 +312,29 @@ function populateCatalog() {
 select.addEventListener("change", () => {
   loadWarbond(select.value).catch(showError);
 });
-resetButton.addEventListener("click", () => replaceSelection(standardPreferences));
-clearButton.addEventListener("click", () => replaceSelection([]));
+howToUseButton.addEventListener("click", () => {
+  window.alert(
+    "Choose a warbond, then click cards you want to buy. "
+    + "Selections are saved automatically. Reset restores the standard "
+    + "preferences; Clear removes every selection.",
+  );
+});
+resetButton.addEventListener("click", () => {
+  if (window.confirm("Reset this warbond to its standard preferences?")) {
+    replaceSelection(standardPreferences);
+  }
+});
+clearButton.addEventListener("click", () => {
+  if (window.confirm("Clear every selected card in this warbond?")) {
+    replaceSelection([]);
+  }
+});
 
 function showError(error) {
   statusElement.hidden = false;
   statusElement.textContent = error.message;
 }
 
-populateCatalog();
-loadWarbond(currentAlias).catch(showError);
+populateCatalog()
+  .then(() => loadWarbond(currentAlias))
+  .catch(showError);
