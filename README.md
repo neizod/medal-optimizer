@@ -8,6 +8,27 @@ are the rewards you should prefer.
 The project uses readable plain-text data files and only the Python standard
 library. Python 3.10 or newer is required.
 
+## Web interface
+
+The repository includes a framework-free web interface. Because it loads the
+warbond and preference files with `fetch`, serve the repository over HTTP
+instead of opening `index.html` directly:
+
+```console
+./launch-server
+```
+
+Then open `http://localhost:8000/`. Opening `index.html` directly through a file
+manager is not supported because browsers prevent a `file://` page from fetching
+the neighboring data files.
+
+The interface defaults to Helldivers Mobilize, renders each page as a 5×3 grid
+using the recorded item dimensions, and stores both the selected warbond and
+reward preferences in browser `localStorage`. Clicking a reward toggles it.
+**Reset** restores the standard preference file for the selected warbond, while
+**Clear** removes every current selection. The web interface does not run the
+medal optimizer yet.
+
 ## Warbond catalog
 
 | Alias | Warbond | Released | Pages |
@@ -199,6 +220,9 @@ ten-page free warbond complete quickly.
 
 ```text
 optimizer.py   executable CLI, parsers, DP solver, and output formatting
+index.html     web interface document
+app.js         warbond loading, grid rendering, and saved preferences
+style.css      minimal centered layout and fixed action toolbar
 warbonds/      warbond metadata, page layouts, rewards, and medal costs
 prefs/         standard player preferences paired by filename
 README.md      usage, formats, and algorithm notes
