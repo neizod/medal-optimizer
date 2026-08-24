@@ -23,6 +23,7 @@ let currentAlias = readSelectedWarbond();
 let currentWarbond = null;
 let standardPreferences = new Set();
 let selectedPreferences = new Set();
+let plannedPurchases = new Set();
 const warbondTextCache = new Map();
 
 function meaningfulLines(text) {
@@ -83,14 +84,10 @@ function parsePreferences(text) {
       .map((key) => key.trim())
       .filter(Boolean);
     for (const key of keys) {
-      preferences.add(itemId(page, key));
+      preferences.add(cardId(page, key));
     }
   }
   return preferences;
-}
-
-function itemId(page, key) {
-  return `${page}:${key}`;
 }
 
 function readStoredPreferences() {
@@ -179,6 +176,7 @@ async function loadWarbond(alias) {
 
 function renderPages() {
   pagesElement.replaceChildren();
+  plannedPurchases = planPurchases(currentWarbond, selectedPreferences);
 
   for (const page of currentWarbond.pages) {
     const section = document.createElement("section");
@@ -195,14 +193,17 @@ function renderPages() {
     grid.setAttribute("aria-label", `Page ${page.number} rewards`);
 
     for (const { item, x, y } of placeCards(page)) {
-      const id = itemId(page.number, item.key);
+      const id = cardId(page.number, item.key);
+      const required = selectedPreferences.has(id);
+      const suggested = !required && plannedPurchases.has(id);
       const button = document.createElement("button");
       button.type = "button";
       button.className = "reward";
       button.style.gridColumn = `${x + 1} / span ${item.width}`;
       button.style.gridRow = `${y + 1} / span ${item.height}`;
       button.dataset.itemId = id;
-      button.setAttribute("aria-pressed", selectedPreferences.has(id));
+      button.dataset.state = required ? "required" : suggested ? "suggested" : "unused";
+      button.setAttribute("aria-pressed", required);
 
       const name = document.createElement("span");
       name.textContent = item.fullName === "FIXME" ? item.key : item.fullName;
@@ -218,14 +219,13 @@ function renderPages() {
       button.append(cost);
 
       button.addEventListener("click", () => {
-        if (selectedPreferences.has(id)) {
+        if (required) {
           selectedPreferences.delete(id);
         } else {
           selectedPreferences.add(id);
         }
-        button.setAttribute("aria-pressed", selectedPreferences.has(id));
         savePreferences();
-        updateMedalTotal();
+        renderPages();
       });
       grid.append(button);
     }
@@ -240,7 +240,7 @@ function updateMedalTotal() {
   const total = currentWarbond.pages.reduce(
     (warbondTotal, page) => warbondTotal + page.items.reduce(
       (pageTotal, item) => pageTotal + (
-        selectedPreferences.has(itemId(page.number, item.key)) ? item.cost : 0
+        plannedPurchases.has(cardId(page.number, item.key)) ? item.cost : 0
       ),
       0,
     ),
@@ -314,8 +314,9 @@ select.addEventListener("change", () => {
 });
 howToUseButton.addEventListener("click", () => {
   window.alert(
-    "Choose a warbond, then click cards you want to buy. "
-    + "Selections are saved automatically. Reset restores the standard "
+    "Choose a warbond, then click cards you want to buy. Green cards are your "
+    + "choices; yellow cards are extra purchases suggested to unlock later "
+    + "pages. Selections are saved automatically. Reset restores the standard "
     + "preferences; Clear removes every selection.",
   );
 });

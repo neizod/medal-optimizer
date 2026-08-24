@@ -29,7 +29,10 @@ compact key, and medal cost. Clicking a card toggles it.
 **Reset** restores the standard preference file for the selected warbond, while
 **Clear** removes every current selection; both actions require confirmation.
 The fixed toolbar also provides brief usage help and a live `💀` total for the
-selected cards. The web interface does not run the medal optimizer yet.
+complete purchase plan. User-selected cards are green. When a selection on a
+later page requires additional purchases to unlock it, the optimizer highlights
+the cheapest supporting cards in yellow. Clicking a yellow card promotes it to
+a green required selection; removing a green selection replans immediately.
 
 ## Warbond catalog
 
@@ -229,6 +232,7 @@ ten-page free warbond complete quickly.
 optimizer.py   executable CLI, parsers, DP solver, and output formatting
 index.html     web interface document
 app.js         warbond loading, grid rendering, and saved preferences
+planner.js     browser-side dynamic-programming purchase planner
 style.css      minimal centered layout and fixed action toolbar
 warbonds/      warbond metadata, page layouts, rewards, and medal costs
 prefs/         standard player preferences paired by filename

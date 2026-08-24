@@ -101,14 +101,24 @@ select {
   background: var(--surface-hover);
 }
 
-.reward[aria-pressed="true"] {
+.reward[data-state="required"] {
   border-color: var(--green);
   outline: 2px solid var(--green);
   background: var(--green-background);
 }
 
-.reward[aria-pressed="true"]:hover {
+.reward[data-state="required"]:hover {
   background: #246b3b;
+}
+
+.reward[data-state="suggested"] {
+  border-color: var(--yellow);
+  outline: 2px solid var(--yellow);
+  background: #574a13;
+}
+
+.reward[data-state="suggested"]:hover {
+  background: #6b5b18;
 }
 
 .reward small {
