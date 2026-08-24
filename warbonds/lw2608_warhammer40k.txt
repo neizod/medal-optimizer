@@ -1,24 +1,24 @@
 Castellan's Creed (2026-08-12)
 
 page 1 unlock 0
-  card       2
-  body      45
-  1st.gun   35
-  cape       8
-  head      30
-  pod       20
+  card       2  1x1  FIXME
+  body      45  1x1  FIXME
+  1st.gun   35  1x1  FIXME
+  cape       8  1x1  FIXME
+  head      30  1x1  FIXME
+  pod       20  1x1  FIXME
 
 page 2 unlock 0
-  3rd.bomb  50
-  2nd.colt  50
-  body      55
-  ship      50
-  card       7
-  cape      25
-  head      45
+  3rd.bomb  50  1x1  FIXME
+  2nd.colt  50  1x1  FIXME
+  body      55  1x1  FIXME
+  ship      50  1x1  FIXME
+  card       7  1x1  FIXME
+  cape      25  1x1  FIXME
+  head      45  1x1  FIXME
 
 page 3 unlock 0
-  mech      50
-  car       55
-  title     20
-  adv.gun  110
+  mech      50  1x1  FIXME
+  car       55  1x1  FIXME
+  title     20  1x1  FIXME
+  adv.gun  110  1x1  FIXME

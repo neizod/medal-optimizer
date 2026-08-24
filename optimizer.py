@@ -14,6 +14,7 @@ from typing import Iterable
 PAGE_HEADER = re.compile(r"page\s+(\d+)(?:\s+unlock\s+(\d+))?\s*$")
 PREF_LINE = re.compile(r"page\s+(\d+)\s*:\s*(.*)$")
 WARBOND_HEADER = re.compile(r"(.+?)\s+\((\d{4}-\d{2}-\d{2})\)\s*$")
+BOX_DIMENSION = re.compile(r"[1-9]\d*x[1-9]\d*")
 
 
 class InputError(ValueError):
@@ -22,8 +23,10 @@ class InputError(ValueError):
 
 @dataclass(frozen=True)
 class Item:
-    name: str
+    key: str
     cost: int
+    box_dimension: str
+    full_name: str
 
 
 @dataclass(frozen=True)
@@ -119,13 +122,19 @@ def parse_warbond(path: Path) -> Warbond:
         if current_number is None:
             raise InputError(f"{path}:{line_number}: item appears before a page header")
         try:
-            name, raw_cost = line.rsplit(maxsplit=1)
+            key, raw_cost, box_dimension, full_name = line.split(maxsplit=3)
             cost = int(raw_cost)
-        except (ValueError, TypeError) as exc:
-            raise InputError(f"{path}:{line_number}: expected ITEM COST") from exc
+        except ValueError as exc:
+            raise InputError(
+                f"{path}:{line_number}: expected KEY COST WIDTHxHEIGHT FULL NAME"
+            ) from exc
         if cost < 0:
             raise InputError(f"{path}:{line_number}: item cost cannot be negative")
-        current_items.append(Item(name, cost))
+        if not BOX_DIMENSION.fullmatch(box_dimension):
+            raise InputError(
+                f"{path}:{line_number}: invalid box dimension {box_dimension!r}"
+            )
+        current_items.append(Item(key, cost, box_dimension, full_name))
 
     finish_page()
     if not pages:
@@ -172,7 +181,7 @@ def parse_preferences(path: Path, pages: tuple[Page, ...]) -> dict[int, tuple[It
             if name in seen:
                 raise InputError(f"{path}: duplicate preference {name!r} on page {page_number}")
             seen.add(name)
-            matches = [item for item in page_items if item.name == name]
+            matches = [item for item in page_items if item.key == name]
             if not matches:
                 raise InputError(f"{path}: unknown item {name!r} on page {page_number}")
             if len(matches) > 1:
@@ -312,7 +321,7 @@ def print_plan(
         print(f"page {page_number}: {page_cost} medals (cumulative: {total})")
         for purchase in purchases:
             marker = "*" if purchase.requested else ""
-            print(f"  {purchase.item.name:<12} {purchase.item.cost:>3}{marker}")
+            print(f"  {purchase.item.key:<12} {purchase.item.cost:>3}{marker}")
         print()
     print(f"total: {total} medals")
 

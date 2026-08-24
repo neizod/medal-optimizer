@@ -1,29 +1,29 @@
 Urban Legends (2024-12-13)
 
 page 1 unlock 0
-  body      40
-  card       2
-  back      75
-  head      30
-  cape       8
-  SC         7
-  2nd.mlee  30
-  pod       20
+  body      40  1x1  FIXME
+  card       2  1x1  FIXME
+  back      75  1x1  FIXME
+  head      30  1x1  FIXME
+  cape       8  1x1  FIXME
+  SC         7  1x1  FIXME
+  2nd.mlee  30  1x1  FIXME
+  pod       20  1x1  FIXME
 
 page 2 unlock 160
-  boost     55
-  sentry    85
-  body      45
-  card       5
-  ship      50
-  head      35
-  cape      20
-  SC        12
+  boost     55  1x1  FIXME
+  sentry    85  1x1  FIXME
+  body      45  1x1  FIXME
+  card       5  1x1  FIXME
+  ship      50  1x1  FIXME
+  head      35  1x1  FIXME
+  cape      20  1x1  FIXME
+  SC        12  1x1  FIXME
 
 page 3 unlock 410
-  car       55
-  turret   110
-  mech      50
-  SC        32
-  emote     50
-  title     20
+  car       55  1x1  FIXME
+  turret   110  1x1  FIXME
+  mech      50  1x1  FIXME
+  SC        32  1x1  FIXME
+  emote     50  1x1  FIXME
+  title     20  1x1  FIXME

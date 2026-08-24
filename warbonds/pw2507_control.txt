@@ -1,25 +1,25 @@
 Control Group (2025-07-17)
 
 page 1 unlock 0
-  body      45
-  card       2
-  1st.gun   35
-  head      30
-  cape       8
-  SC         7
-  adv.gun   75
+  body      45  2x2  AD-26 Bleeding Edge
+  card       2  1x2  Conductor of Brilliance
+  1st.gun   35  2x1  VG-70 Variable
+  head      30  1x1  AD-26 Bleeding Edge
+  cape       8  1x1  Conductor of Brilliance
+  SC         7  1x1  Super Credits
+  adv.gun   75  2x2  PLAS-45 Epoch
 
 page 2 unlock 150
-  SC        12
-  head      45
-  body      55
-  cape      25
-  sentry    85
-  card       7
+  SC        12  1x1  Super Credits
+  head      45  1x1  AD-49 Apollonian
+  body      55  2x3  AD-49 Apollonian
+  cape      25  1x2  Over Artifice Triumphant
+  sentry    85  2x2  A/LAS-98 Laser Sentry
+  card       7  1x1  Over Artifice Triumphant
 
 page 3 unlock 320
-  emote     55
-  title     20
-  3rd.bomb  65
-  SC        32
-  back     110
+  emote     55  2x2  Protect Eardrums
+  title     20  1x2  Exemplary Subject
+  3rd.bomb  65  2x3  G-31 Arc
+  SC        32  1x1  Super Credits
+  back     110  2x1  LIFT-182 Warp Pack

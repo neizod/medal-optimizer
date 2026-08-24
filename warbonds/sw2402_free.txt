@@ -1,101 +1,101 @@
 Helldivers Mobilize (2024-02-08)
 
 page 1 unlock 0
-  card       1
-  3rd.bomb   2
-  SC         1
-  1st.gun    4
-  emote      1
-  body       3
-  head       2
-  cape       2
+  card       1  1x1  FIXME
+  3rd.bomb   2  1x1  FIXME
+  SC         1  1x1  FIXME
+  1st.gun    4  1x1  FIXME
+  emote      1  1x1  FIXME
+  body       3  1x1  FIXME
+  head       2  1x1  FIXME
+  cape       2  1x1  FIXME
 
 page 2 unlock 8
-  emote      2
-  body       6
-  head       5
-  card       1
-  2nd.colt   5
-  cape       3
-  SC         2
-  1st.gun    8
+  emote      2  1x1  FIXME
+  body       6  1x1  FIXME
+  head       5  1x1  FIXME
+  card       1  1x1  FIXME
+  2nd.colt   5  1x1  FIXME
+  cape       3  1x1  FIXME
+  SC         2  1x1  FIXME
+  1st.gun    8  1x1  FIXME
 
 page 3 unlock 35
-  card       2
-  boost     15
-  SC         3
-  1st.gun   15
-  emote      8
-  body      10
-  head       7
-  cape       5
+  card       2  1x1  FIXME
+  boost     15  1x1  FIXME
+  SC         3  1x1  FIXME
+  1st.gun   15  1x1  FIXME
+  emote      8  1x1  FIXME
+  body      10  1x1  FIXME
+  head       7  1x1  FIXME
+  cape       5  1x1  FIXME
 
 page 4 unlock 75
-  emote     20
-  body      15
-  head      12
-  cape       8
-  card       2
-  boost     20
-  SC         6
-  1st.gun   20
+  emote     20  1x1  FIXME
+  body      15  1x1  FIXME
+  head      12  1x1  FIXME
+  cape       8  1x1  FIXME
+  card       2  1x1  FIXME
+  boost     20  1x1  FIXME
+  SC         6  1x1  FIXME
+  1st.gun   20  1x1  FIXME
 
 page 5 unlock 150
-  3rd.bomb  20
-  card       4
-  SC        10
-  1st.gun   30
-  body      25
-  head      20
-  emote     20
-  cape      12
+  3rd.bomb  20  1x1  FIXME
+  card       4  1x1  FIXME
+  SC        10  1x1  FIXME
+  1st.gun   30  1x1  FIXME
+  body      25  1x1  FIXME
+  head      20  1x1  FIXME
+  emote     20  1x1  FIXME
+  cape      12  1x1  FIXME
 
 page 6 unlock 260
-  emote     12
-  body      35
-  head      25
-  card       6
-  boost     40
-  cape      15
-  SC        15
-  1st.gun   40
+  emote     12  1x1  FIXME
+  body      35  1x1  FIXME
+  head      25  1x1  FIXME
+  card       6  1x1  FIXME
+  boost     40  1x1  FIXME
+  cape      15  1x1  FIXME
+  SC        15  1x1  FIXME
+  1st.gun   40  1x1  FIXME
 
 page 7 unlock 420
-  boost     75
-  card       7
-  SC        15
-  1st.gun   40
-  body      50
-  head      35
-  emote     35
-  cape      15
+  boost     75  1x1  FIXME
+  card       7  1x1  FIXME
+  SC        15  1x1  FIXME
+  1st.gun   40  1x1  FIXME
+  body      50  1x1  FIXME
+  head      35  1x1  FIXME
+  emote     35  1x1  FIXME
+  cape      15  1x1  FIXME
 
 page 8 unlock 650
-  emote     50
-  body      60
-  head      40
-  card      10
-  3rd.bomb  25
-  cape      25
-  SC        20
-  1st.gun   60
+  emote     50  1x1  FIXME
+  body      60  1x1  FIXME
+  head      40  1x1  FIXME
+  card      10  1x1  FIXME
+  3rd.bomb  25  1x1  FIXME
+  cape      25  1x1  FIXME
+  SC        20  1x1  FIXME
+  1st.gun   60  1x1  FIXME
 
 page 9 unlock 850
-  boost     70
-  card      15
-  SC        25
-  1st.gun   60
-  body      70
-  head      50
-  emote     30
-  cape      30
+  boost     70  1x1  FIXME
+  card      15  1x1  FIXME
+  SC        25  1x1  FIXME
+  1st.gun   60  1x1  FIXME
+  body      70  1x1  FIXME
+  head      50  1x1  FIXME
+  emote     30  1x1  FIXME
+  cape      30  1x1  FIXME
 
 page 10 unlock 1200
-  emote     50
-  body     100
-  head      75
-  boost    150
-  card      20
-  cape      40
-  SC        50
-  1st.gun   75
+  emote     50  1x1  FIXME
+  body     100  1x1  FIXME
+  head      75  1x1  FIXME
+  boost    150  1x1  FIXME
+  card      20  1x1  FIXME
+  cape      40  1x1  FIXME
+  SC        50  1x1  FIXME
+  1st.gun   75  1x1  FIXME

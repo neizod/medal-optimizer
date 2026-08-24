@@ -1,29 +1,29 @@
 Dust Devils (2025-09-04)
 
 page 1 unlock 0
-  cape       8
-  head      30
-  SC         7
-  pod       20
-  body      45
-  card       2
-  1st.gun   35
+  cape       8  1x1  FIXME
+  head      30  1x1  FIXME
+  SC         7  1x1  FIXME
+  pod       20  1x1  FIXME
+  body      45  1x1  FIXME
+  card       2  1x1  FIXME
+  1st.gun   35  1x1  FIXME
 
 page 2 unlock 110
-  adv.gun   85
-  head      45
-  body      55
-  card       7
-  cape      25
-  ship      50
-  adv.rkt   85
-  SC        12
+  adv.gun   85  1x1  FIXME
+  head      45  1x1  FIXME
+  body      55  1x1  FIXME
+  card       7  1x1  FIXME
+  cape      25  1x1  FIXME
+  ship      50  1x1  FIXME
+  adv.rkt   85  1x1  FIXME
+  SC        12  1x1  FIXME
 
 page 3 unlock 270
-  SC        32
-  mininuke 110
-  emote     20
-  mech      50
-  car       55
-  3rd.bomb  65
-  title     20
+  SC        32  1x1  FIXME
+  mininuke 110  1x1  FIXME
+  emote     20  1x1  FIXME
+  mech      50  1x1  FIXME
+  car       55  1x1  FIXME
+  3rd.bomb  65  1x1  FIXME
+  title     20  1x1  FIXME
