@@ -77,6 +77,10 @@ select {
   margin-top: 0.25rem;
 }
 
+.reward .key {
+  font-family: monospace;
+}
+
 .actions {
   position: fixed;
   bottom: 0;

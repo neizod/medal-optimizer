@@ -4,10 +4,10 @@ page 1 unlock 0
   body      45  2x2  AD-26 Bleeding Edge
   card       2  1x2  Conductor of Brilliance
   1st.gun   35  2x1  VG-70 Variable
+  adv.gun   75  2x2  PLAS-45 Epoch
   head      30  1x1  AD-26 Bleeding Edge
   cape       8  1x1  Conductor of Brilliance
   SC         7  1x1  Super Credits
-  adv.gun   75  2x2  PLAS-45 Epoch
 
 page 2 unlock 150
   SC        12  1x1  Super Credits

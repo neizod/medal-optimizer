@@ -185,24 +185,28 @@ function renderPages() {
     grid.className = "grid";
     grid.setAttribute("aria-label", `Page ${page.number} rewards`);
 
-    const items = [...page.items].sort(
-      (left, right) => (right.width * right.height) - (left.width * left.height),
-    );
-    for (const item of items) {
+    for (const { item, x, y } of placeCards(page)) {
       const id = itemId(page.number, item.key);
       const button = document.createElement("button");
       button.type = "button";
       button.className = "reward";
-      button.style.gridColumn = `span ${item.width}`;
-      button.style.gridRow = `span ${item.height}`;
+      button.style.gridColumn = `${x + 1} / span ${item.width}`;
+      button.style.gridRow = `${y + 1} / span ${item.height}`;
       button.dataset.itemId = id;
       button.setAttribute("aria-pressed", selectedPreferences.has(id));
 
       const name = document.createElement("span");
       name.textContent = item.fullName === "FIXME" ? item.key : item.fullName;
+      const key = document.createElement("small");
+      key.className = "key";
+      key.textContent = item.key;
       const cost = document.createElement("small");
       cost.textContent = `${item.cost} medals`;
-      button.append(name, cost);
+      button.append(name);
+      if (item.fullName !== "FIXME") {
+        button.append(key);
+      }
+      button.append(cost);
 
       button.addEventListener("click", () => {
         if (selectedPreferences.has(id)) {
@@ -219,6 +223,44 @@ function renderPages() {
     section.append(grid);
     pagesElement.append(section);
   }
+}
+
+function placeCards(page) {
+  const columns = 5;
+  const rows = 3;
+  const occupied = Array.from({ length: rows }, () => Array(columns).fill(false));
+  const placements = [];
+
+  for (const item of page.items) {
+    let placement = null;
+    for (let y = 0; y < rows && !placement; y += 1) {
+      for (let x = 0; x < columns && !placement; x += 1) {
+        const fits = x + item.width <= columns
+          && y + item.height <= rows
+          && Array.from({ length: item.height }, (_, dy) =>
+            Array.from({ length: item.width }, (_, dx) => !occupied[y + dy][x + dx])
+              .every(Boolean))
+            .every(Boolean);
+        if (fits) {
+          placement = { item, x, y };
+        }
+      }
+    }
+
+    if (!placement) {
+      throw new Error(
+        `Page ${page.number}: card ${item.key} does not fit the 5x3 grid in file order`,
+      );
+    }
+
+    for (let dy = 0; dy < item.height; dy += 1) {
+      for (let dx = 0; dx < item.width; dx += 1) {
+        occupied[placement.y + dy][placement.x + dx] = true;
+      }
+    }
+    placements.push(placement);
+  }
+  return placements;
 }
 
 function replaceSelection(preferences) {

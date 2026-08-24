@@ -23,8 +23,9 @@ manager is not supported because browsers prevent a `file://` page from fetching
 the neighboring data files.
 
 The interface defaults to Helldivers Mobilize, renders each page as a 5×3 grid
-using the recorded item dimensions, and stores both the selected warbond and
-reward preferences in browser `localStorage`. Clicking a reward toggles it.
+using the recorded card dimensions, and stores both the selected warbond and
+reward preferences in browser `localStorage`. Each card shows its full name,
+compact key, and medal cost. Clicking a card toggles it.
 **Reset** restores the standard preference file for the selected warbond, while
 **Clear** removes every current selection. The web interface does not run the
 medal optimizer yet.
@@ -164,6 +165,11 @@ An item is uniquely identified by its warbond, page, and key together. A key is
 not globally unique: labels such as `SC` intentionally recur across pages and
 warbonds. Within one page, duplicate keys make a preference ambiguous and are
 therefore unusable as preference targets.
+
+Cards must be listed in visual reading order: left to right, then top to bottom.
+The web interface places each card into the first unoccupied grid position where
+its complete rectangle fits. A page is invalid if a card cannot fit within the
+5×3 grid in that order.
 
 ## Preference data
 
