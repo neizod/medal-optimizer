@@ -1,101 +1,101 @@
-Helldivers Mobilize (2024-02-08)
+Helldivers Mobilize! (2024-02-08)
 
 page 1 unlock 0
-  card       1  1x1  FIXME
-  3rd.bomb   2  1x1  FIXME
-  SC         1  1x1  FIXME
-  1st.gun    4  1x1  FIXME
-  emote      1  1x1  FIXME
-  body       3  1x1  FIXME
-  head       2  1x1  FIXME
-  cape       2  1x1  FIXME
+  card       1  1x2  Independence Bringer
+  3rd.bomb   2  1x2  G-6 Frag
+  SC         1  1x1  Super Credits
+  1st.gun    4  2x1  SG-8 Punisher
+  body       3  2x2  SC-34 Infiltrator
+  head       2  1x1  SC-34 Infiltrator
+  emote      1  2x1  Clapping
+  cape       2  1x1  Independence Bringer
 
 page 2 unlock 8
-  emote      2  1x1  FIXME
-  body       6  1x1  FIXME
-  head       5  1x1  FIXME
-  card       1  1x1  FIXME
-  2nd.colt   5  1x1  FIXME
-  cape       3  1x1  FIXME
-  SC         2  1x1  FIXME
-  1st.gun    8  1x1  FIXME
+  emote      2  2x1  Finger Guns
+  body       6  2x2  FS-05 Marksman
+  head       5  1x1  FS-05 Marksman
+  card       1  1x2  Liberty's Herald
+  2nd.colt   5  1x2  P-19 Redeemer
+  cape       3  1x1  Liberty's Herald
+  SC         2  1x1  Super Credits
+  1st.gun    8  2x1  R-63 Diligence
 
 page 3 unlock 35
-  card       2  1x1  FIXME
-  boost     15  1x1  FIXME
-  SC         3  1x1  FIXME
-  1st.gun   15  1x1  FIXME
-  emote      8  1x1  FIXME
-  body      10  1x1  FIXME
-  head       7  1x1  FIXME
-  cape       5  1x1  FIXME
+  card       2  1x2  Tideturner
+  boost     15  1x2  Hellpod Space Optimization
+  SC         3  1x1  Super Credits
+  1st.gun   15  2x1  SMG-37 Defender
+  body      10  2x2  CE-35 Trench Engineer
+  head       7  1x1  CE-35 Trench Engineer
+  emote      8  2x1  Explosive Handshake
+  cape       5  1x1  Tideturner
 
 page 4 unlock 75
-  emote     20  1x1  FIXME
-  body      15  1x1  FIXME
-  head      12  1x1  FIXME
-  cape       8  1x1  FIXME
-  card       2  1x1  FIXME
-  boost     20  1x1  FIXME
-  SC         6  1x1  FIXME
-  1st.gun   20  1x1  FIXME
+  emote     20  2x1  Hug
+  body      15  2x2  CM-09 Bonesnapper
+  head      12  1x1  CM-09 Bonesnapper
+  card       2  1x2  Stars and Suffrage
+  boost     20  1x2  Vitality Enhancement
+  cape       8  1x1  Stars and Suffrage
+  SC         6  1x1  Super Credits
+  1st.gun   20  2x1  SG-225 Breaker
 
 page 5 unlock 150
-  3rd.bomb  20  1x1  FIXME
-  card       4  1x1  FIXME
-  SC        10  1x1  FIXME
-  1st.gun   30  1x1  FIXME
-  body      25  1x1  FIXME
-  head      20  1x1  FIXME
-  emote     20  1x1  FIXME
-  cape      12  1x1  FIXME
+  3rd.bomb  20  1x2  G-16 Impact
+  card       4  1x2  Unblemished Allegiance
+  SC        10  1x1  Super Credits
+  1st.gun   30  2x1  LAS-5 Scythe
+  body      25  2x2  DP-40 Hero of the Federation
+  head      20  1x1  DP-40 Hero of the Federation
+  emote     20  2x1  High-Five
+  cape      12  1x1  Unblemished Allegiance
 
 page 6 unlock 260
-  emote     12  1x1  FIXME
-  body      35  1x1  FIXME
-  head      25  1x1  FIXME
-  card       6  1x1  FIXME
-  boost     40  1x1  FIXME
-  cape      15  1x1  FIXME
-  SC        15  1x1  FIXME
-  1st.gun   40  1x1  FIXME
+  emote     12  2x1  Flex
+  body      35  2x2  FS-23 Battle Master
+  head      25  1x1  FS-23 Battle Master
+  card       6  1x2  Judgment Day
+  boost     40  1x2  UAV Recon Booster
+  cape      15  1x1  Judgment Day
+  SC        15  1x1  Super Credits
+  1st.gun   40  2x1  AR-23P Liberator Penetrator
 
 page 7 unlock 420
-  boost     75  1x1  FIXME
-  card       7  1x1  FIXME
-  SC        15  1x1  FIXME
-  1st.gun   40  1x1  FIXME
-  body      50  1x1  FIXME
-  head      35  1x1  FIXME
-  emote     35  1x1  FIXME
-  cape      15  1x1  FIXME
+  boost     75  1x2  Stamina Enhancement
+  card       7  1x2  Cresting Honor
+  SC        15  1x1  Super Credits
+  1st.gun   40  2x1  R-63CS Diligence Counter Sniper
+  body      50  2x2  SC-30 Trailblazer Scout
+  head      35  1x1  SC-30 Trailblazer Scout
+  emote     35  2x1  Scout Handshake
+  cape      15  1x1  Cresting Honor
 
 page 8 unlock 650
-  emote     50  1x1  FIXME
-  body      60  1x1  FIXME
-  head      40  1x1  FIXME
-  card      10  1x1  FIXME
-  3rd.bomb  25  1x1  FIXME
-  cape      25  1x1  FIXME
-  SC        20  1x1  FIXME
-  1st.gun   60  1x1  FIXME
+  emote     50  2x1  Rock Paper Scissors
+  body      60  2x2  SA-04 Combat Technician
+  head      40  1x1  SA-04 Combat Technician
+  card      10  1x2  Mantle of True Citizenship
+  3rd.bomb  25  1x2  G-3 Smoke
+  cape      25  1x1  Mantle of True Citizenship
+  SC        20  1x1  Super Credits
+  1st.gun   60  2x1  SG-8S Slugger
 
 page 9 unlock 850
-  boost     70  1x1  FIXME
-  card      15  1x1  FIXME
-  SC        25  1x1  FIXME
-  1st.gun   60  1x1  FIXME
-  body      70  1x1  FIXME
-  head      50  1x1  FIXME
-  emote     30  1x1  FIXME
-  cape      30  1x1  FIXME
+  boost     70  1x2  Muscle Enhancement
+  card      15  1x2  Blazing Samaritan
+  SC        25  1x1  Super Credits
+  1st.gun   60  2x1  SG-225SP Breaker Spray&Pray
+  body      70  2x2  CM-14 Physician
+  head      50  1x1  CM-14 Physician
+  emote     30  2x1  Loosen Up
+  cape      30  1x1  Blazing Samaritan
 
 page 10 unlock 1200
-  emote     50  1x1  FIXME
-  body     100  1x1  FIXME
-  head      75  1x1  FIXME
-  boost    150  1x1  FIXME
-  card      20  1x1  FIXME
-  cape      40  1x1  FIXME
-  SC        50  1x1  FIXME
-  1st.gun   75  1x1  FIXME
+  emote     50  2x1  Big Whoop
+  body     100  2x2  DP-11 Champion of the People
+  head      75  1x1  DP-11 Champion of the People
+  boost    150  1x2  Increased Reinforcement Budget
+  card      20  1x2  Light of Eternal Liberty
+  cape      40  1x1  Light of Eternal Liberty
+  SC        50  1x1  Super Credits
+  1st.gun   75  2x1  PLAS-1 Scorcher

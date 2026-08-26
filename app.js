@@ -2,10 +2,7 @@
 
 const CATALOG = [
   { alias: "free", file: "sw2402_free.txt" },
-  { alias: "urban", file: "pw2412_urban.txt" },
   { alias: "control", file: "pw2507_control.txt" },
-  { alias: "dust", file: "pw2509_dust.txt" },
-  { alias: "warhammer40k", file: "lw2608_warhammer40k.txt" },
 ];
 
 const STORAGE_KEY = "helldiver-medal-optimizer.preferences.v1";
