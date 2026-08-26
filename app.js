@@ -13,6 +13,7 @@ const select = document.querySelector("#warbond");
 const pagesElement = document.querySelector("#pages");
 const statusElement = document.querySelector("#status");
 const howToUseButton = document.querySelector("#how-to-use");
+const instructionsDialog = document.querySelector("#instructions");
 const resetButton = document.querySelector("#reset");
 const clearButton = document.querySelector("#clear");
 const medalTotalElement = document.querySelector("#medal-total");
@@ -400,24 +401,69 @@ select.addEventListener("change", () => {
   loadWarbond(select.value).catch(showError);
 });
 howToUseButton.addEventListener("click", () => {
-  window.alert(
-    "Choose a warbond, then click cards you want to buy. Green cards are your "
-    + "choices; yellow cards are extra purchases suggested to unlock later "
-    + "pages. Selections are saved automatically. Reset restores the standard "
-    + "preferences; Clear removes every selection.",
-  );
+  instructionsDialog.showModal();
 });
-resetButton.addEventListener("click", () => {
-  if (window.confirm("Reset this warbond to its standard preferences?")) {
-    expandCurrentWarbondPages();
-    replaceSelection(standardPreferences);
+
+function addHoldAction(button, action) {
+  let holdTimer = null;
+  let holding = false;
+
+  function cancelHold() {
+    if (!holding) {
+      return;
+    }
+    window.clearTimeout(holdTimer);
+    holdTimer = null;
+    holding = false;
+    button.classList.remove("holding");
   }
+
+  function startHold(event) {
+    if (event.type === "pointerdown" && event.button !== 0) {
+      return;
+    }
+    event.preventDefault();
+    if (holding) {
+      return;
+    }
+    holding = true;
+    button.classList.remove("hold-complete");
+    button.classList.add("holding");
+    holdTimer = window.setTimeout(() => {
+      holding = false;
+      holdTimer = null;
+      button.classList.remove("holding");
+      button.classList.add("hold-complete");
+      action();
+      window.setTimeout(() => button.classList.remove("hold-complete"), 150);
+    }, 1000);
+  }
+
+  button.addEventListener("pointerdown", startHold);
+  button.addEventListener("pointerup", cancelHold);
+  button.addEventListener("pointerleave", cancelHold);
+  button.addEventListener("pointercancel", cancelHold);
+  button.addEventListener("keydown", (event) => {
+    if (event.key === " " || event.key === "Enter") {
+      startHold(event);
+    }
+  });
+  button.addEventListener("keyup", (event) => {
+    if (event.key === " " || event.key === "Enter") {
+      cancelHold();
+    }
+  });
+  button.addEventListener("blur", cancelHold);
+  button.addEventListener("click", (event) => event.preventDefault());
+}
+
+addHoldAction(resetButton, () => {
+  expandCurrentWarbondPages();
+  replaceSelection(standardPreferences);
 });
-clearButton.addEventListener("click", () => {
-  if (window.confirm("Clear every selected card in this warbond?")) {
-    expandCurrentWarbondPages();
-    replaceSelection([]);
-  }
+addHoldAction(clearButton, () => {
+  expandCurrentWarbondPages();
+  replaceSelection([]);
 });
 
 function showError(error) {

@@ -24,11 +24,50 @@
       <div id="pages"></div>
     </main>
 
+    <dialog id="instructions">
+      <h2>Medal Optimizer: plan your hard-earned 💀</h2>
+      <p>
+        First, select the Warbond you want to optimize.<br>
+        Then inspect its items. They come in three colors:
+      </p>
+      <ul class="color-legend">
+        <li><strong>🟢 Green</strong>: items on your wishlist</li>
+        <li><strong>🟡 Yellow</strong>: extra purchases recommended by the optimizer</li>
+        <li><strong>⚫ Gray</strong>: items not in the buying plan</li>
+      </ul>
+      <p>
+        Click any ⚫/🟡 item to mark it 🟢.<br>
+        Click a 🟢 item to remove it from your wishlist; it will become ⚫/🟡.
+      </p>
+      <p>
+        If you like a ⚫ item, don't hesitate to turn it 🟢!<br>
+        The optimizer will recalculate the plan around all your 🟢 choices.<br>
+        You'll probably buy everything eventually.
+      </p>
+      <p class="medal-warning">
+        <strong>⚠ Medal limit:</strong> You can hold only 💀 250 at a time.
+      </p>
+      <p>
+        Hold <strong>Clear</strong> to make every item ⚫.<br>
+        Hold <strong>Reset</strong> to restore 🟢 items template
+        (mostly SC and key items).
+      </p>
+      <form method="dialog" class="dialog-actions">
+        <button type="submit">Close</button>
+      </form>
+    </dialog>
+
     <div class="actions" role="toolbar" aria-label="Preference actions">
       <button id="how-to-use" type="button">How to use</button>
       <div class="preference-actions">
-        <button id="reset" type="button">Reset</button>
-        <button id="clear" type="button">Clear</button>
+        <button id="clear" class="hold-action" type="button" title="Hold for 1 second"
+                aria-label="Clear; hold for 1 second">
+          <span>Clear</span>
+        </button>
+        <button id="reset" class="hold-action" type="button" title="Hold for 1 second"
+                aria-label="Reset; hold for 1 second">
+          <span>Reset</span>
+        </button>
       </div>
       <output id="medal-total" aria-label="Total medals selected">💀 0</output>
     </div>
