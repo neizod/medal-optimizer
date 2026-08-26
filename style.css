@@ -73,9 +73,35 @@ select {
   margin: 2rem 0;
 }
 
+.page.collapsed {
+  margin-bottom: 0;
+}
+
+.page.collapsed + .page {
+  margin-top: 0;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .page h2 {
+  margin: 0.83em 0;
   font-size: 1.1rem;
   color: var(--yellow);
+}
+
+.collapse-toggle {
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: var(--background);
+}
+
+.collapse-toggle:hover {
+  background: var(--surface);
 }
 
 .grid {
@@ -86,6 +112,23 @@ select {
   gap: 0.4rem;
   width: 100%;
   aspect-ratio: 5 / 3;
+}
+
+.grid[hidden] {
+  display: none;
+}
+
+.grid-error {
+  box-sizing: border-box;
+  min-height: 6rem;
+  padding: 1rem;
+  color: #ff6b6b;
+  border: 1px solid #b84a4a;
+  background: #35191b;
+}
+
+.grid-error[hidden] {
+  display: none;
 }
 
 .reward {

@@ -10,6 +10,7 @@ const CATALOG = [
 
 const STORAGE_KEY = "helldiver-medal-optimizer.preferences.v1";
 const WARBOND_STORAGE_KEY = "helldiver-medal-optimizer.warbond.v1";
+const COLLAPSED_PAGES_STORAGE_KEY = "helldiver-medal-optimizer.collapsed-pages.v1";
 
 const select = document.querySelector("#warbond");
 const pagesElement = document.querySelector("#pages");
@@ -25,6 +26,7 @@ let standardPreferences = new Set();
 let selectedPreferences = new Set();
 let plannedPurchases = new Set();
 const warbondTextCache = new Map();
+const collapsedPages = readCollapsedPages();
 
 function meaningfulLines(text) {
   return text
@@ -55,16 +57,17 @@ function parseWarbond(text) {
       continue;
     }
 
-    const item = line.match(/^(\S+)\s+(\d+)\s+(\d+x\d+)\s+(.+)$/);
+    const item = line.match(/^(\S+)\s+(\d+)\s+(\S+)\s+(.+)$/);
     if (!page || !item) {
       throw new Error(`Invalid warbond line: ${line}`);
     }
-    const [width, height] = item[3].split("x").map(Number);
+    const dimensions = item[3].match(/^(\d+)x(\d+)$/);
     page.items.push({
       key: item[1],
       cost: Number(item[2]),
-      width,
-      height,
+      box: item[3],
+      width: dimensions ? Number(dimensions[1]) : null,
+      height: dimensions ? Number(dimensions[2]) : null,
       fullName: item[4],
     });
   }
@@ -105,6 +108,32 @@ function readSelectedWarbond() {
     return CATALOG.some((entry) => entry.alias === alias) ? alias : "free";
   } catch {
     return "free";
+  }
+}
+
+function readCollapsedPages() {
+  try {
+    const value = JSON.parse(
+      localStorage.getItem(COLLAPSED_PAGES_STORAGE_KEY) || "[]",
+    );
+    return new Map(
+      Array.isArray(value)
+        ? value.filter((key) => typeof key === "string").map((key) => [key, true])
+        : [],
+    );
+  } catch {
+    return new Map();
+  }
+}
+
+function saveCollapsedPages() {
+  try {
+    localStorage.setItem(
+      COLLAPSED_PAGES_STORAGE_KEY,
+      JSON.stringify([...collapsedPages.keys()]),
+    );
+  } catch {
+    // The app still works for this session when storage is unavailable.
   }
 }
 
@@ -182,52 +211,97 @@ function renderPages() {
     const section = document.createElement("section");
     section.className = "page";
 
+    const pageHeader = document.createElement("div");
+    pageHeader.className = "page-header";
+
     const heading = document.createElement("h2");
+    heading.id = `page-${currentAlias}-${page.number}-heading`;
     heading.textContent = page.number === 1
       ? `Page ${page.number}`
       : `Page ${page.number}, unlock: 💀 ${page.unlock}`;
-    section.append(heading);
+    pageHeader.append(heading);
 
     const grid = document.createElement("div");
     grid.className = "grid";
+    grid.id = `page-${currentAlias}-${page.number}-grid`;
     grid.setAttribute("aria-label", `Page ${page.number} rewards`);
+    const collapseKey = `${currentAlias}:${page.number}`;
+    const collapsed = collapsedPages.get(collapseKey) || false;
+    section.classList.toggle("collapsed", collapsed);
+    grid.hidden = collapsed;
 
-    for (const { item, x, y } of placeCards(page)) {
-      const id = cardId(page.number, item.key);
-      const required = selectedPreferences.has(id);
-      const suggested = !required && plannedPurchases.has(id);
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "reward";
-      button.style.gridColumn = `${x + 1} / span ${item.width}`;
-      button.style.gridRow = `${y + 1} / span ${item.height}`;
-      button.dataset.itemId = id;
-      button.dataset.state = required ? "required" : suggested ? "suggested" : "unused";
-      button.setAttribute("aria-pressed", required);
-
-      const name = document.createElement("span");
-      name.textContent = item.fullName === "FIXME" ? item.key : item.fullName;
-      const key = document.createElement("small");
-      key.className = "key";
-      key.textContent = item.key;
-      const cost = document.createElement("small");
-      cost.textContent = `💀 ${item.cost}`;
-      button.append(name);
-      if (item.fullName !== "FIXME") {
-        button.append(key);
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "collapse-toggle";
+    toggle.textContent = collapsed ? "Expand" : "Collapse";
+    toggle.setAttribute(
+      "aria-label",
+      `${collapsed ? "Expand" : "Collapse"} Page ${page.number}`,
+    );
+    toggle.setAttribute("aria-expanded", String(!collapsed));
+    toggle.setAttribute("aria-controls", grid.id);
+    toggle.addEventListener("click", () => {
+      const willCollapse = !grid.hidden;
+      grid.hidden = willCollapse;
+      section.classList.toggle("collapsed", willCollapse);
+      if (willCollapse) {
+        collapsedPages.set(collapseKey, true);
+      } else {
+        collapsedPages.delete(collapseKey);
       }
-      button.append(cost);
+      saveCollapsedPages();
+      toggle.textContent = willCollapse ? "Expand" : "Collapse";
+      toggle.setAttribute(
+        "aria-label",
+        `${willCollapse ? "Expand" : "Collapse"} Page ${page.number}`,
+      );
+      toggle.setAttribute("aria-expanded", String(!willCollapse));
+    });
+    pageHeader.append(toggle);
+    section.append(pageHeader);
 
-      button.addEventListener("click", () => {
-        if (required) {
-          selectedPreferences.delete(id);
-        } else {
-          selectedPreferences.add(id);
+    try {
+      for (const { item, x, y } of placeCards(page)) {
+        const id = cardId(page.number, item.key);
+        const required = selectedPreferences.has(id);
+        const suggested = !required && plannedPurchases.has(id);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "reward";
+        button.style.gridColumn = `${x + 1} / span ${item.width}`;
+        button.style.gridRow = `${y + 1} / span ${item.height}`;
+        button.dataset.itemId = id;
+        button.dataset.state = required ? "required" : suggested ? "suggested" : "unused";
+        button.setAttribute("aria-pressed", required);
+
+        const name = document.createElement("span");
+        name.textContent = item.fullName === "FIXME" ? item.key : item.fullName;
+        const key = document.createElement("small");
+        key.className = "key";
+        key.textContent = item.key;
+        const cost = document.createElement("small");
+        cost.textContent = `💀 ${item.cost}`;
+        button.append(name);
+        if (item.fullName !== "FIXME") {
+          button.append(key);
         }
-        savePreferences();
-        renderPages();
-      });
-      grid.append(button);
+        button.append(cost);
+
+        button.addEventListener("click", () => {
+          if (required) {
+            selectedPreferences.delete(id);
+          } else {
+            selectedPreferences.add(id);
+          }
+          savePreferences();
+          renderPages();
+        });
+        grid.append(button);
+      }
+    } catch (error) {
+      grid.className = "grid-error";
+      grid.setAttribute("role", "alert");
+      grid.textContent = `Cannot draw this page: ${error.message}`;
     }
 
     section.append(grid);
@@ -256,6 +330,12 @@ function placeCards(page) {
   const placements = [];
 
   for (const item of page.items) {
+    if (!Number.isInteger(item.width) || !Number.isInteger(item.height)
+        || item.width < 1 || item.height < 1) {
+      throw new Error(
+        `card ${item.key} has invalid box dimensions "${item.box}"`,
+      );
+    }
     let placement = null;
     for (let y = 0; y < rows && !placement; y += 1) {
       for (let x = 0; x < columns && !placement; x += 1) {
@@ -293,6 +373,16 @@ function replaceSelection(preferences) {
   renderPages();
 }
 
+function expandCurrentWarbondPages() {
+  const prefix = `${currentAlias}:`;
+  for (const key of collapsedPages.keys()) {
+    if (key.startsWith(prefix)) {
+      collapsedPages.delete(key);
+    }
+  }
+  saveCollapsedPages();
+}
+
 async function populateCatalog() {
   const entries = await Promise.all(CATALOG.map(async (entry) => {
     const warbond = parseWarbond(await fetchWarbondText(entry));
@@ -322,11 +412,13 @@ howToUseButton.addEventListener("click", () => {
 });
 resetButton.addEventListener("click", () => {
   if (window.confirm("Reset this warbond to its standard preferences?")) {
+    expandCurrentWarbondPages();
     replaceSelection(standardPreferences);
   }
 });
 clearButton.addEventListener("click", () => {
   if (window.confirm("Clear every selected card in this warbond?")) {
+    expandCurrentWarbondPages();
     replaceSelection([]);
   }
 });
