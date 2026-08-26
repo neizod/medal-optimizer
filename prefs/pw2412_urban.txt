@@ -1,3 +1,3 @@
 page 1: SC
-page 2: SC, boost
+page 2: SC, booster
 page 3: SC

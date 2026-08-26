@@ -1,3 +1,3 @@
 page 1: SC
-page 2: SC, adv.gun
+page 2: SC, support
 page 3: SC

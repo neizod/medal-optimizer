@@ -3,14 +3,14 @@ Castellan's Creed (2026-08-12)
 page 1 unlock 0
   card       2  1x1  FIXME
   body      45  1x1  FIXME
-  1st.gun   35  1x1  FIXME
+  primary   35  1x1  FIXME
   cape       8  1x1  FIXME
   head      30  1x1  FIXME
   pod       20  1x1  FIXME
 
 page 2 unlock 0
-  3rd.bomb  50  1x1  FIXME
-  2nd.colt  50  1x1  FIXME
+  grenade   50  1x1  FIXME
+  secondary 50  1x1  FIXME
   body      55  1x1  FIXME
   ship      50  1x1  FIXME
   card       7  1x1  FIXME
@@ -21,4 +21,4 @@ page 3 unlock 0
   mech      50  1x1  FIXME
   car       55  1x1  FIXME
   title     20  1x1  FIXME
-  adv.gun  110  1x1  FIXME
+  support  110  1x1  FIXME

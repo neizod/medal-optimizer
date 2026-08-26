@@ -7,16 +7,16 @@ page 1 unlock 0
   pod       20  1x1  FIXME
   body      45  1x1  FIXME
   card       2  1x1  FIXME
-  1st.gun   35  1x1  FIXME
+  primary   35  1x1  FIXME
 
 page 2 unlock 110
-  adv.gun   85  1x1  FIXME
+  support   85  1x1  FIXME
   head      45  1x1  FIXME
   body      55  1x1  FIXME
   card       7  1x1  FIXME
   cape      25  1x1  FIXME
   ship      50  1x1  FIXME
-  adv.rkt   85  1x1  FIXME
+  launcher  85  1x1  FIXME
   SC        12  1x1  FIXME
 
 page 3 unlock 270
@@ -25,5 +25,5 @@ page 3 unlock 270
   emote     20  1x1  FIXME
   mech      50  1x1  FIXME
   car       55  1x1  FIXME
-  3rd.bomb  65  1x1  FIXME
+  grenade   65  1x1  FIXME
   title     20  1x1  FIXME

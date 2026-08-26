@@ -8,6 +8,15 @@ const CATALOG = [
 const STORAGE_KEY = "helldiver-medal-optimizer.preferences.v1";
 const WARBOND_STORAGE_KEY = "helldiver-medal-optimizer.warbond.v1";
 const COLLAPSED_PAGES_STORAGE_KEY = "helldiver-medal-optimizer.collapsed-pages.v1";
+const LEGACY_ITEM_KEYS = {
+  "1st.gun": "primary",
+  "2nd.colt": "secondary",
+  "2nd.mlee": "secondary",
+  "3rd.bomb": "grenade",
+  "adv.gun": "support",
+  "adv.rkt": "launcher",
+  boost: "booster",
+};
 
 const select = document.querySelector("#warbond");
 const pagesElement = document.querySelector("#pages");
@@ -94,7 +103,32 @@ function parsePreferences(text) {
 function readStoredPreferences() {
   try {
     const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-    return value && typeof value === "object" ? value : {};
+    if (!value || typeof value !== "object" || Array.isArray(value)) {
+      return {};
+    }
+
+    let migrated = false;
+    for (const [alias, preferences] of Object.entries(value)) {
+      if (!Array.isArray(preferences)) {
+        continue;
+      }
+      value[alias] = preferences.map((id) => {
+        if (typeof id !== "string") {
+          return id;
+        }
+        const separator = id.indexOf(":");
+        const oldKey = id.slice(separator + 1);
+        if (separator < 0 || !Object.hasOwn(LEGACY_ITEM_KEYS, oldKey)) {
+          return id;
+        }
+        migrated = true;
+        return `${id.slice(0, separator + 1)}${LEGACY_ITEM_KEYS[oldKey]}`;
+      });
+    }
+    if (migrated) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
+    }
+    return value;
   } catch {
     return {};
   }

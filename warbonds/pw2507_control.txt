@@ -3,8 +3,8 @@ Control Group (2025-07-17)
 page 1 unlock 0
   body      45  2x2  AD-26 Bleeding Edge
   card       2  1x2  Conductor of Brilliance
-  1st.gun   35  2x1  VG-70 Variable
-  adv.gun   75  2x2  PLAS-45 Epoch
+  primary   35  2x1  VG-70 Variable
+  support   75  2x2  PLAS-45 Epoch
   head      30  1x1  AD-26 Bleeding Edge
   cape       8  1x1  Conductor of Brilliance
   SC         7  1x1  Super Credits
@@ -20,6 +20,6 @@ page 2 unlock 150
 page 3 unlock 320
   emote     55  2x2  Protect Eardrums
   title     20  1x2  Exemplary Subject
-  3rd.bomb  65  2x3  G-31 Arc
+  grenade   65  2x3  G-31 Arc
   SC        32  1x1  Super Credits
   back     110  2x1  LIFT-182 Warp Pack

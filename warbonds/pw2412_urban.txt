@@ -7,11 +7,11 @@ page 1 unlock 0
   head      30  1x1  FIXME
   cape       8  1x1  FIXME
   SC         7  1x1  FIXME
-  2nd.mlee  30  1x1  FIXME
+  secondary 30  1x1  FIXME
   pod       20  1x1  FIXME
 
 page 2 unlock 160
-  boost     55  1x1  FIXME
+  booster   55  1x1  FIXME
   sentry    85  1x1  FIXME
   body      45  1x1  FIXME
   card       5  1x1  FIXME
