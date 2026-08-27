@@ -132,12 +132,31 @@ select {
 }
 
 .reward {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   overflow: hidden;
   padding: 0.35rem;
   color: var(--text);
   border: 1px solid var(--border);
   background: var(--surface);
+}
+
+.reward-name {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  hyphens: auto;
+}
+
+@media (min-width: 501px) {
+  .reward {
+    justify-content: center;
+  }
+
+  .reward-name {
+    flex-grow: 0;
+  }
 }
 
 .reward:hover {
@@ -165,6 +184,7 @@ select {
 }
 
 .reward small {
+  flex: 0 0 auto;
   display: block;
   margin-top: 0.25rem;
 }

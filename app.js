@@ -305,13 +305,23 @@ function renderPages() {
         button.dataset.itemId = id;
         button.dataset.state = required ? "required" : suggested ? "suggested" : "unused";
         button.setAttribute("aria-pressed", required);
+        const displayName = item.fullName === "FIXME" ? item.key : item.fullName;
+        button.title = item.fullName === "FIXME" ? item.key : item.fullName;
+        button.setAttribute(
+          "aria-label",
+          item.fullName === "FIXME"
+            ? `${item.key}, ${item.cost} medals`
+            : `${item.fullName}, ${item.key}, ${item.cost} medals`,
+        );
 
         const name = document.createElement("span");
-        name.textContent = item.fullName === "FIXME" ? item.key : item.fullName;
+        name.className = "reward-name";
+        name.textContent = displayName;
         const key = document.createElement("small");
         key.className = "key";
         key.textContent = item.key;
         const cost = document.createElement("small");
+        cost.className = "cost";
         cost.textContent = `💀 ${item.cost}`;
         button.append(name);
         if (item.fullName !== "FIXME") {
