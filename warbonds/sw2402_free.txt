@@ -51,7 +51,7 @@ page 5 unlock 150
   cape      12  1x1  Unblemished Allegiance
 
 page 6 unlock 260
-  emote     12  2x1  Flex
+  emote     10  2x1  Flex
   body      35  2x2  FS-23 Battle Master
   head      25  1x1  FS-23 Battle Master
   card       6  1x2  Judgment Day
