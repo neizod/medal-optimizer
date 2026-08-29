@@ -4,7 +4,7 @@ page 1 unlock 0
   primary   35  2x1  LAS-16 Trident
   SC         7  1x1  Super Credits
   card       2  1x2  Rags of the Fashionable
-  pod       20  1x2  Churned Earth Pattern
+  ptn.pod   20  1x2  Churned Earth Pattern
   body      45  2x2  SA-7 Headfirst
   head      30  1x1  SA-7 Headfirst
   cape       8  1x1  Rags of the Fashionable
@@ -14,15 +14,15 @@ page 2 unlock 165
   launcher  85  2x1  EAT-411 Leveller
   card       7  1x2  Wedgeful Tricorn
   body      55  2x2  SA-8 Ram
-  ship      50  2x2  Churned Earth Pattern
+  ptn.ship  50  2x2  Churned Earth Pattern
   SC        12  1x1  Super Credits
   head      45  1x1  SA-8 Ram
   cape      25  1x1  Wedgeful Tricorn
 
 page 3 unlock 210
-  car       55  2x2  Churned Earth Pattern
+  ptn.car   55  2x2  Churned Earth Pattern
   SC        32  1x1  Super Credits
-  mech      50  2x3  Churned Earth Pattern
+  ptn.mech  50  2x3  Churned Earth Pattern
   emote     20  1x1  Display of Brawn
   title     20  1x1  Bunker Buster
   launcher 110  1x1  GL-28 Belt-Fed Grenade Launcher

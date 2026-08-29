@@ -1,0 +1,29 @@
+Exo Experts (2026-04-28)
+
+page 1 unlock 0
+  primary   35  2x1  SMG-203 Gallant
+  head      30  1x1  O-3 Free Spirit
+  cape       8  1x1  Free-Spirited Spangles
+  ptn.pod   20  1x2  Mobile White Pattern
+  support   75  1x2  MGX-42 Bullet Storm
+  card       2  1x2  Free-Spirited Spangles
+  body      45  2x2  O-3 Free Spirit
+  SC         7  1x1  Super Credits
+
+page 2 unlock 165
+  mech      50  1x1  EXO-51 Lumberer Exosuit
+  secondary 50  1x1  P-33 Missile Pistol
+  card       7  1x2  Watchful Compatriot
+  body      55  2x2  O-2 Heavy Operator
+  ptn.ship  50  2x2  Mobile White Pattern
+  SC        12  1x1  Super Credits
+  head      45  1x1  O-2 Heavy Operator
+  cape      25  1x1  Watchful Compatriot
+
+page 3 unlock 220
+  ptn.car   55  2x2  Mobile White Pattern
+  SC        32  1x1  Super Credits
+  ptn.mech  50  2x3  Mobile White Pattern
+  emote     55  1x1  Thumb of Approval
+  title     20  1x1  Exosuit Certified
+  mech      50  2x1  EXO-55 Breakthrough Exosuit
