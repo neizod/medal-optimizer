@@ -2,6 +2,7 @@
 
 const CATALOG = [
   { alias: "free", file: "sw2402_free.txt" },
+  { alias: "urban", file: "pw2412_urban.txt" },
   { alias: "control", file: "pw2507_control.txt" },
   { alias: "siege", file: "pw2602_siege.txt" },
   { alias: "exo", file: "pw2604_exo.txt" },

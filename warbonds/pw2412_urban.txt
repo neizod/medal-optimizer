@@ -1,29 +1,29 @@
 Urban Legends (2024-12-13)
 
 page 1 unlock 0
-  body      40  1x1  FIXME
-  card       2  1x1  FIXME
-  back      75  1x1  FIXME
-  head      30  1x1  FIXME
-  cape       8  1x1  FIXME
-  SC         7  1x1  FIXME
-  secondary 30  1x1  FIXME
-  pod       20  1x1  FIXME
+  body      40  2x2  SR-24 Street Scout
+  card       2  1x2  Rebar Resolve
+  support   75  2x1  Directional Shield
+  secondary 30  1x2  CQC-19 Stun Lance
+  ptn.pod   20  1x2  Concrete Jungle
+  head      30  1x1  SR-24 Street Scout
+  cape       8  1x1  Rebar Resolve
+  SC         7  1x1  Super Credits
 
 page 2 unlock 160
-  booster   55  1x1  FIXME
-  sentry    85  1x1  FIXME
-  body      45  1x1  FIXME
-  card       5  1x1  FIXME
-  ship      50  1x1  FIXME
-  head      35  1x1  FIXME
-  cape      20  1x1  FIXME
-  SC        12  1x1  FIXME
+  booster   55  1x1  Armed Resupply Pods
+  sentry    85  1x1  Flame Sentry
+  body      45  2x2  SR-18 Roadblock
+  card       5  1x2  Holder of the Yellow Line
+  ptn.ship  50  2x2  Concrete Jungle
+  head      35  1x1  SR-18 Roadblock
+  cape      20  1x1  Holder of the Yellow Line
+  SC        12  1x1  Super Credits
 
-page 3 unlock 410
-  car       55  1x1  FIXME
-  turret   110  1x1  FIXME
-  mech      50  1x1  FIXME
-  SC        32  1x1  FIXME
-  emote     50  1x1  FIXME
-  title     20  1x1  FIXME
+page 3 unlock 250
+  ptn.car   55  2x2  Concrete Jungle
+  sentry   110  1x2  Anti-Tank Emplacement
+  ptn.mech  55  2x3  Concrete Jungle
+  SC        32  1x1  Super Credits
+  emote     50  1x1  This is Democracy
+  title     20  1x1  Super Pedestrain
